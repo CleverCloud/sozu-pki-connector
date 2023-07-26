@@ -1,6 +1,6 @@
 # Sōzu pki connector
 
-> This application retrieve pki in a directory and load them into Sōzu
+> This application retrieves pki (public key infrastructure) in a directory and loads them into Sōzu
 
 ## Status
 
@@ -8,11 +8,28 @@ The connector is under development, it is not yet ready for production.
 
 ## Configuration
 
-See the [`example.config.toml`](./example.config.toml).
+We suggest you rename [`example.config.toml`](./example.config.toml)
+to `pki.toml` and put it in `/etc/sozu/connector/`:
+
+```
+mkdir /etc/sozu
+mkdir /etc/sozu/connector/
+cp example.config.toml /etc/sozu/connector/pki.toml
+```
+
+Set the values. You can set these things:
+
+- watching the pki directory:
+    - its path
+    - the check intervals
+- the metrics server's address
+- the path to Sōzu's configuration
+- the address of the HTTPS listener where Sōzu will load it's certificates
 
 ## Usage
 
-Once you have install the `sozu-pki-connector`, you could start it with the following command.
+Once you have installed the `sozu-pki-connector` and followed the configuration indication,
+you can start it with the following command.
 
 ```
 sozu-pki-connector -vvv -c /etc/sozu/connector/pki.toml

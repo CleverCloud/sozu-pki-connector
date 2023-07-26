@@ -1,4 +1,4 @@
-# Socket address on which to listen
+# Socket address on which to expose the metrics server
 listening-address = "0.0.0.0:3000"
 # Duration between two checks of pki directory in milliseconds
 interval = 30_000
