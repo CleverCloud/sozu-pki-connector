@@ -1,6 +1,6 @@
 [package]
 name = "sozu-pki-connector"
-description = "This application retrieve pki in a folder and load them into Sōzu"
+description = "This application retrieve pki in a directory and load them into Sōzu"
 homepage = "https://github.com/CleverCloud/sozu-pki-connector"
 documentation = "https://github.com/CleverCloud/sozu-pki-connector/blob/main/README.md"
 version = "0.1.0"

@@ -32,7 +32,7 @@ pub enum Error {
 /// Sōzu-related configuration
 #[derive(Serialize, Deserialize, PartialEq, Eq, Clone, Debug)]
 pub struct Sozu {
-    /// Path to pki folder
+    /// Path to pki directory
     #[serde(rename = "pki")]
     pub pki: PathBuf,
     /// Path to configuration file
@@ -51,7 +51,7 @@ pub struct ConnectorConfiguration {
     /// Socket address on which expose metrics server
     #[serde(rename = "listening-address")]
     pub listening_address: SocketAddr,
-    /// Duration between two checks of pki folder
+    /// Duration between two checks of pki directory
     #[serde(rename = "interval")]
     pub interval: u64,
     /// Sōzu configuration

@@ -1,5 +1,5 @@
 [Unit]
-Description = This application retrieve pki on a folder and load them into Sōzu
+Description = This application retrieve pki on a directory and load them into Sōzu
 Documentation = https://github.com/cleverCloud/sozu-pki-connector
 After = network-online.target local-fs.target remote-fs.target time-sync.target sozu.service
 Requires = network-online.target local-fs.target remote-fs.target time-sync.target sozu.service
