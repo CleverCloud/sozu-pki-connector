@@ -1,6 +1,6 @@
 //! # Sozu pki connector
 //!
-//! This application retrieve pki on a folder and load them into Sōzu
+//! This application retrieve pki on a directory and load them into Sōzu
 
 use std::{path::PathBuf, sync::Arc};
 
@@ -29,14 +29,14 @@ pub enum Error {
     Termination(std::io::Error),
     #[error("failed to serve http server, {0}")]
     HttpServer(http::server::Error),
-    #[error("failed to watch pki folder, {0}")]
+    #[error("failed to watch pki directory, {0}")]
     Watcher(watcher::Error),
 }
 
 // -----------------------------------------------------------------------------
 // Args
 
-/// A connector that watch a folder at regular interval that contains pki to
+/// A connector that watch a directory at regular interval that contains pki to
 /// load incoming certificates.
 #[derive(Parser, PartialEq, Eq, Clone, Debug)]
 #[command(author, version, about, long_about = None)]

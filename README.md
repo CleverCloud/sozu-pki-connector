@@ -1,6 +1,6 @@
 # Sōzu pki connector
 
-> This application retrieve pki in a folder and load them into Sōzu
+> This application retrieve pki in a directory and load them into Sōzu
 
 ## Status
 

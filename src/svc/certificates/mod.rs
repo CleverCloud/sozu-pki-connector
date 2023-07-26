@@ -37,8 +37,8 @@ pub enum Error {
     ReadDir(PathBuf, io::Error),
     #[error("failed to read entry, '{0}'")]
     ReadEntry(io::Error),
-    #[error("failed to retrieve folder name of path '{0}'")]
-    FolderName(PathBuf),
+    #[error("failed to retrieve directory name of path '{0}'")]
+    DirectoryName(PathBuf),
     #[error("failed to read path '{0}', {1}")]
     Read(PathBuf, io::Error),
     #[error("failed to parse pem, '{0}'")]
@@ -133,7 +133,7 @@ pub async fn find(path: &PathBuf) -> Result<HashMap<PathBuf, CertificateAndKey>,
         } else {
             warn!(
                 path = path.display().to_string(),
-                "Found a path in certificate directory which is not a folder"
+                "Found a path in certificate directory which is not a directory"
             );
         }
     }
@@ -144,10 +144,10 @@ pub async fn find(path: &PathBuf) -> Result<HashMap<PathBuf, CertificateAndKey>,
 #[tracing::instrument]
 pub async fn read(path: PathBuf) -> Result<Option<CertificateAndKey>, Error> {
     // ---------------------------------------------------------------------------------
-    // Retrieve name of the current folder
+    // Retrieve name of the current directory
     let name = path
         .file_name()
-        .ok_or_else(|| Error::FolderName(path.to_owned()))?
+        .ok_or_else(|| Error::DirectoryName(path.to_owned()))?
         .to_string_lossy();
 
     // ---------------------------------------------------------------------------------
