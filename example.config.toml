@@ -1,0 +1,18 @@
+# Socket address on which to listen
+listening-address = "0.0.0.0:3000"
+# Duration between two checks of pki folder in milliseconds
+interval = 30_000
+
+[sozu]
+# Listener on which it will load certificates
+listener = "0.0.0.0:443"
+# Path to Sōzu's configuration file
+configuration = "path/to/sozu/config.toml"
+# Path to pki folder
+pki = "path/to/pki/folder"
+
+[sentry]
+# The Data Source Name of our API
+dsn = "https://..."
+# See https://docs.rs/sentry/0.31.3/sentry/struct.ClientOptions.html#structfield.environment
+environment = "production"
