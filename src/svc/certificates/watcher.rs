@@ -6,7 +6,9 @@ use std::{collections::HashMap, path::PathBuf, sync::Arc, time::Duration};
 
 use once_cell::sync::Lazy;
 use prometheus::{register_int_counter_vec, IntCounterVec};
-use sozu_client::{Client, Sender, channel::ConnectionProperties, config::canonicalize_command_socket};
+use sozu_client::{
+    channel::ConnectionProperties, config::canonicalize_command_socket, Client, Sender,
+};
 use sozu_command_lib::proto::display::format_request_type;
 use tokio::time::interval;
 use tracing::{debug, error, info, trace, warn};
@@ -94,9 +96,7 @@ impl Watcher {
                 .map_err(Error::CanonicalizeSocket)?;
         }
 
-        let client = Client::try_new(opts)
-            .await
-            .map_err(Error::CreateClient)?;
+        let client = Client::try_new(opts).await.map_err(Error::CreateClient)?;
 
         Ok(Self {
             config,
@@ -132,13 +132,8 @@ impl Watcher {
         // -----------------------------------------------------------------------------
         // Create messages to update Sōzu and send them
         debug!("Create diff and messages to send to the proxy");
-        let requests = message::create(
-            self.config.sozu.listener,
-            &self.metadata,
-            &metadata,
-            &pki,
-        )
-        .map_err(Error::ComputeMessage)?;
+        let requests = message::create(self.config.sozu.listener, &self.metadata, &metadata, &pki)
+            .map_err(Error::ComputeMessage)?;
 
         let len = requests.len();
         debug!(number = len, "Number of requests to send to the proxy");

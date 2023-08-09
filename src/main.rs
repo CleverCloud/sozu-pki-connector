@@ -8,10 +8,10 @@ use clap::{ArgAction, Parser};
 use tracing::{error, info};
 
 use crate::svc::{
+    certificates::watcher,
     config::{self, ConnectorConfiguration},
     http,
     logging::{self, LoggingInitGuard},
-    certificates::watcher,
 };
 
 pub mod svc;

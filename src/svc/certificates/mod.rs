@@ -9,7 +9,10 @@ use std::{
 };
 
 use sozu_command_lib::{
-    certificate::{calculate_fingerprint, split_certificate_chain, Fingerprint},
+    certificate::{
+        calculate_fingerprint, get_cn_and_san_attributes, parse, split_certificate_chain,
+        CertificateError, Fingerprint,
+    },
     proto::command::CertificateAndKey,
 };
 use tokio::{
@@ -17,12 +20,6 @@ use tokio::{
     task::{spawn_blocking as blocking, JoinError},
 };
 use tracing::{debug, warn};
-use x509_parser::{
-    error::{PEMError, X509Error},
-    nom,
-    pem::parse_x509_pem as parse_pem,
-    prelude::GeneralName,
-};
 
 pub mod diff;
 pub mod message;
@@ -42,11 +39,7 @@ pub enum Error {
     #[error("failed to read path '{0}', {1}")]
     Read(PathBuf, io::Error),
     #[error("failed to parse pem, '{0}'")]
-    ParsePem(nom::Err<PEMError>),
-    #[error("failed to parse x509 certificate, '{0}'")]
-    ParseX509(nom::Err<X509Error>),
-    #[error("failed to parse x509 attributes, '{0}'")]
-    X509(X509Error),
+    ParsePem(CertificateError),
     #[error("failed to compute fingerprint, {0}")]
     Fingerprint(Box<dyn std::error::Error + Send + Sync>),
     #[error("failed to join on task, {0}")]
@@ -152,8 +145,8 @@ pub async fn read(path: PathBuf) -> Result<Option<CertificateAndKey>, Error> {
 
     // ---------------------------------------------------------------------------------
     // Compute path to certificate and key
-    let certificates_path = path.join(format!("{}.crt", name));
-    let key_path = path.join(format!("{}.key", name));
+    let certificates_path = path.join(format!("{name}.crt"));
+    let key_path = path.join(format!("{name}.key"));
     let tls_path = path.join("options.json");
 
     // ---------------------------------------------------------------------------------
@@ -205,25 +198,9 @@ pub async fn read(path: PathBuf) -> Result<Option<CertificateAndKey>, Error> {
     }
 
     // ---------------------------------------------------------------------------------
-    // Parse certificate to retrieve SAN and CN attributes from X509 certificate
-    let (_, pem) = parse_pem(certificate.as_bytes()).map_err(Error::ParsePem)?;
-    let parsed_certificate = pem.parse_x509().map_err(Error::ParseX509)?;
-    let mut names = HashSet::new();
-
-    for name in parsed_certificate.subject.iter_common_name() {
-        names.insert(name.as_str().map(String::from).map_err(Error::X509)?);
-    }
-
-    if let Some(san) = parsed_certificate
-        .subject_alternative_name()
-        .map_err(Error::X509)?
-    {
-        for name in &san.value.general_names {
-            if let GeneralName::DNSName(name) = name {
-                names.insert(name.to_string());
-            }
-        }
-    }
+    // Parse certificate to retrieve SAN and CN attributes from pem
+    let pem = parse(certificate.as_bytes()).map_err(Error::ParsePem)?;
+    let names = get_cn_and_san_attributes(&pem).map_err(Error::ParsePem)?;
 
     Ok(Some(CertificateAndKey {
         certificate,
