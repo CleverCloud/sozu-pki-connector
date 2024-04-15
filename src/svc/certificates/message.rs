@@ -51,7 +51,7 @@ pub fn create(
         );
 
         let request_type = RequestType::AddCertificate(AddCertificate {
-            address: https_listener.to_string(),
+            address: https_listener.into(),
             certificate: pki
                 .get(&added)
                 .ok_or_else(|| Error::NoPKIAt(added.to_owned()))?
@@ -76,7 +76,7 @@ pub fn create(
         );
 
         let request_type = RequestType::RemoveCertificate(RemoveCertificate {
-            address: https_listener.to_string(),
+            address: https_listener.into(),
             fingerprint: metadata.fingerprint.to_string(),
         });
 
@@ -106,7 +106,7 @@ pub fn create(
         }
 
         let request_type = RequestType::ReplaceCertificate(ReplaceCertificate {
-            address: https_listener.to_string(),
+            address: https_listener.into(),
             new_certificate: pki
                 .get(&modified)
                 .ok_or_else(|| Error::NoPKIAt(modified.to_owned()))?

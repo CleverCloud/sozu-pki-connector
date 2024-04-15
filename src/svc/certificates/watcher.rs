@@ -168,7 +168,7 @@ impl Watcher {
                             "Successfully sent request to Sōzu"
                         );
                     }
-                    Err(err) if matches!(err, sozu_client::Error::Failure(_)) => {
+                    Err(err) if matches!(err, sozu_client::Error::Failure(..)) => {
                         // This will be retried in the next iteration
                         match self.metadata.get(&path) {
                             Some(meta) => {
