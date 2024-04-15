@@ -4,14 +4,14 @@ description = "This application retrieve pki in a directory and load them into S
 homepage = "https://github.com/CleverCloud/sozu-pki-connector"
 documentation = "https://github.com/CleverCloud/sozu-pki-connector/blob/main/README.md"
 version = "0.1.1"
-rust-version = "1.67.0"
+rust-version = "1.74.0"
 edition = "2021"
 license-file = "LICENSE"
 authors = ["Emmanuel Bosquet <emmanuel.bosquet@clever-cloud.com>", "Florentin Dubois <florentin.dubois@clever-cloud.com>"]
 
 [dependencies]
 axum = { version = "^0.6.20", features = ["tokio"] }
-config = "^0.13.3"
+config = "^0.14.0"
 clap = { version = "^4.3.21", features = ["derive"] }
 hyper = { version = "^0.14.27", default-features = false, features = ["http1", "server"] }
 mime = "^0.3.17"
@@ -20,10 +20,10 @@ paw = "^1.0.0"
 prometheus = "^0.13.3"
 serde = { version = "^1.0.183", features = ["derive"] }
 serde_json = "^1.0.104"
-sentry = { version = "^0.31.5", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
-sentry-tracing = "^0.31.5"
-sozu-client = "^0.2.1"
-sozu-command-lib = "^0.15.3"
+sentry = { version = "^0.32.2", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
+sentry-tracing = "^0.32.2"
+sozu-client = "^0.4.0"
+sozu-command-lib = "^1.0.0-rc.2"
 thiserror = "^1.0.44"
 tokio = { version = "^1.29.1", features = ["macros", "rt", "signal"] }
 tracing = "^0.1.37"

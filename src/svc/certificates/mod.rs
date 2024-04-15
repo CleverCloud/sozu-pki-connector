@@ -10,8 +10,7 @@ use std::{
 
 use sozu_command_lib::{
     certificate::{
-        calculate_fingerprint, get_cn_and_san_attributes, parse, split_certificate_chain,
-        CertificateError, Fingerprint,
+        calculate_fingerprint, get_cn_and_san_attributes, parse_pem, parse_x509, split_certificate_chain, CertificateError, Fingerprint
     },
     proto::command::CertificateAndKey,
 };
@@ -40,6 +39,8 @@ pub enum Error {
     Read(PathBuf, io::Error),
     #[error("failed to parse pem, '{0}'")]
     ParsePem(CertificateError),
+    #[error("failed to parse x509 from pem, '{0}'")]
+    ParseX509(CertificateError),
     #[error("failed to compute fingerprint, {0}")]
     Fingerprint(Box<dyn std::error::Error + Send + Sync>),
     #[error("failed to join on task, {0}")]
@@ -199,8 +200,9 @@ pub async fn read(path: PathBuf) -> Result<Option<CertificateAndKey>, Error> {
 
     // ---------------------------------------------------------------------------------
     // Parse certificate to retrieve SAN and CN attributes from pem
-    let pem = parse(certificate.as_bytes()).map_err(Error::ParsePem)?;
-    let names = get_cn_and_san_attributes(&pem).map_err(Error::ParsePem)?;
+    let pem = parse_pem(certificate.as_bytes()).map_err(Error::ParsePem)?;
+    let x509 = parse_x509(&pem.contents).map_err(Error::ParseX509)?;
+    let names = get_cn_and_san_attributes(&x509);
 
     Ok(Some(CertificateAndKey {
         certificate,
