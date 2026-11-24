@@ -3,7 +3,7 @@ name = "sozu-pki-connector"
 description = "This application retrieve pki in a directory and load them into Sōzu"
 homepage = "https://github.com/CleverCloud/sozu-pki-connector"
 documentation = "https://github.com/CleverCloud/sozu-pki-connector/blob/main/README.md"
-version = "0.1.1"
+version = "0.2.0"
 rust-version = "1.95.0"
 edition = "2021"
 license-file = "LICENSE"
@@ -22,7 +22,7 @@ serde = { version = "^1.0.183", features = ["derive"] }
 serde_json = "^1.0.104"
 sentry = { version = "^0.32.2", default-features = false, features = ["backtrace", "contexts", "panic", "reqwest", "rustls"] }
 sentry-tracing = "^0.32.2"
-sozu-client = "^0.7.0"
+sozu-client = "^0.7.1"
 sozu-command-lib = "^2.3.7"
 thiserror = "^1.0.44"
 tokio = { version = "^1.29.1", features = ["macros", "rt", "signal"] }
