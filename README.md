@@ -6,6 +6,8 @@
 
 The connector is under development, it is not yet ready for production.
 
+Building from source requires Rust 1.95.0 and `protoc`. The connector uses the Sōzu 2.3.7 command protocol.
+
 ## Configuration
 
 We suggest you rename [`example.config.toml`](./example.config.toml)
